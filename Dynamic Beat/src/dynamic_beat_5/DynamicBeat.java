@@ -23,7 +23,15 @@ public class DynamicBeat extends JFrame {
 	private ImageIcon exitButtonEnterdImage = new ImageIcon(Main.class.getResource("../images/exitButtonEntered.png"));
 	private ImageIcon exitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/exitButtonBasic.png"));
 	
+	private ImageIcon startButtonEnteredImage =new ImageIcon(Main.class.getResource("../images/startButtonEntered.png"));
+	private ImageIcon startButtonBasicImage =new ImageIcon(Main.class.getResource("../images/startButtonBasic.png"));
+	private ImageIcon quitButtonEnteredImage =new ImageIcon(Main.class.getResource("../images/quitButtonEntered.png"));
+	private ImageIcon quitButtonBasicImage =new ImageIcon(Main.class.getResource("../images/quitButtonBasic.png"));
+	
+	
 	private JButton exitButton = new JButton(exitButtonBasicImage);
+	private JButton startButton = new JButton(startButtonBasicImage);
+	private JButton quitButton= new JButton(quitButtonBasicImage);
 	
 	
 	private int mouseX, mouseY;
@@ -36,6 +44,7 @@ public class DynamicBeat extends JFrame {
 		setVisible(true);
 		setBackground(new Color(0, 0, 0, 0));
 		setLayout(null);
+	 
 		exitButton.setBounds(1245, 0,30, 30);
 		exitButton.setContentAreaFilled(false);
 		exitButton.setFocusPainted(false);
@@ -66,8 +75,61 @@ public class DynamicBeat extends JFrame {
 		});
 		add(exitButton);
 		
-		
+		startButton.setBounds(40, 200,400, 100);
+		startButton.setContentAreaFilled(false);
+		startButton.setFocusPainted(false);
+		startButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				startButton.setIcon(startButtonEnteredImage);
+				startButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				Music buttonEenteredMusic = new Music("buttonEnteredMusic.mp3",false);
+				buttonEenteredMusic.start();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				exitButton.setIcon(exitButtonBasicImage);
+				exitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
+				buttonPressedMusic.start();
+			//// 게임시작이벤트 넣을곳 /////
+			}
+		});
+		add(startButton);
 
+		quitButton.setBounds(40, 330, 400, 100);
+		quitButton.setContentAreaFilled(false);
+		quitButton.setFocusPainted(false);
+		quitButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				quitButton.setIcon(quitButtonEnteredImage);
+				quitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				Music buttonEenteredMusic = new Music("buttonEnteredMusic.mp3",false);
+				buttonEenteredMusic.start();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				quitButton.setIcon(exitButtonBasicImage);
+				quitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
+				buttonPressedMusic.start();
+				try {
+					Thread.sleep(1000);//종료소리를 듣고 끄기 위해서
+				}catch(InterruptedException ex) {
+					ex.printStackTrace();
+				}
+				System.exit(0);
+			}
+		});
+		add(quitButton);
+		
 		menuBar.setBounds(0, 0, 1280, 30);
 		menuBar.addMouseListener(new MouseAdapter() {
 			@Override
