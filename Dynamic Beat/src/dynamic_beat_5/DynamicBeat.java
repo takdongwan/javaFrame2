@@ -88,7 +88,7 @@ public class DynamicBeat extends JFrame {
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				exitButton.setIcon(exitButtonBasicImage);
+				exitButton.setIcon(startButtonBasicImage);
 				exitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 			@Override
@@ -113,7 +113,7 @@ public class DynamicBeat extends JFrame {
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				quitButton.setIcon(exitButtonBasicImage);
+				quitButton.setIcon(quitButtonBasicImage);
 				quitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 			@Override
