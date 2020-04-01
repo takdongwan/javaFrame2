@@ -18,7 +18,7 @@ public class DynamicBeat extends JFrame {
 	private Image screenImage;
 	private Graphics screenGraphic;
 
-	private Image introBackGround = new ImageIcon(Main.class.getResource("../images/introBackGround.jpg")).getImage();
+	private Image background = new ImageIcon(Main.class.getResource("../images/introbackGround.jpg")).getImage();
 	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
 	private ImageIcon exitButtonEnterdImage = new ImageIcon(Main.class.getResource("../images/exitButtonEntered.png"));
 	private ImageIcon exitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/exitButtonBasic.png"));
@@ -35,6 +35,7 @@ public class DynamicBeat extends JFrame {
 	
 	
 	private int mouseX, mouseY;
+	
 	public DynamicBeat() {
 		setUndecorated(true);// 실행시 기본 존재 메뉴바가사라짐
 		setTitle("Dynamic Beat");
@@ -88,14 +89,17 @@ public class DynamicBeat extends JFrame {
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				exitButton.setIcon(startButtonBasicImage);
-				exitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				startButton.setIcon(startButtonBasicImage);
+				startButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
 				Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
 				buttonPressedMusic.start();
-			//// 게임시작이벤트 넣을곳 /////
+			//// 아래는 게임시작이벤트 넣을곳 /////
+				startButton.setVisible(false);
+				quitButton.setVisible(false);
+				background =  new ImageIcon(Main.class.getResource("../images/mainBackground.jpg")).getImage();
 			}
 		});
 		add(startButton);
@@ -165,7 +169,7 @@ public class DynamicBeat extends JFrame {
 
 	private void screenDraw(Graphics g) {
 
-		g.drawImage(introBackGround, 0, 0, null);// 0,0 좌표
+		g.drawImage(background, 0, 0, null);// 0,0 좌표
 		paintComponents(g);// 메뉴바같은 건 항상 존재하기 때문에 한버튼이나 고정된 메뉴바에 사용함.
 		this.repaint();// 전체화면 이미지를 매순간마다 그려줌.
 	}
