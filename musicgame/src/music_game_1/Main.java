@@ -1,4 +1,4 @@
-package dynamic_beat_1;
+package music_game_1;
 
 public class Main {
 
