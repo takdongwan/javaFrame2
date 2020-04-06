@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,8 +34,6 @@ public class MusicGame extends JFrame {
 	private ImageIcon rightButtonEnteredImage =new ImageIcon(Main.class.getResource("../images/rightButtonEntered.png"));
 	private Image background = new ImageIcon(Main.class.getResource("../images/introbackGround.jpg")).getImage();
 	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
-	private Image selectedImage = new ImageIcon(Main.class.getResource("../images/In The Silence Start Image.png")).getImage();
-	private Image titleImage = new ImageIcon(Main.class.getResource("../images/In the Silence Title Image.png")).getImage();
 	
 	private JButton exitButton = new JButton(exitButtonBasicImage);
 	private JButton startButton = new JButton(startButtonBasicImage);
@@ -45,6 +44,13 @@ public class MusicGame extends JFrame {
 	private int mouseX, mouseY;
 	
 	private boolean isMainScreen = false;//처음에는 메인화면이 아닌 시작화면 이기 때문에 false ,  
+	
+	ArrayList<MusicTrack> musicTrackList = new ArrayList<MusicTrack>() ;
+	private Image selectedImage ;
+	private Image titleImage ;
+	private Music selectedMusic = new Music("JP Cooper - In The Silence.mp3", false);
+	private int nowSelected = 0; //첫번쨰곡 의미  즉 현재선택된 곡의번호 ,인덱스는 0부터시작 
+	
 	
 	public MusicGame() {
 		setUndecorated(true);// 실행시 기본 존재 메뉴바가사라짐
@@ -59,7 +65,10 @@ public class MusicGame extends JFrame {
 		Music introMusic = new Music("introMusic.mp3", true);
 		introMusic.start();
 		
-		exitButton.setBounds(1245, 0,30, 30);
+		musicTrackList.add(new MusicTrack("In The Silence Title Image.png","In The Silence Start Image.png","In The Silence Game Image.png","JP Cooper - In The Silence Selected.mp3","JP Cooper - In The Silence.mp3"));
+		musicTrackList.add(new MusicTrack("Pink Sweat$ Title Image.png", "Pink Sweat Start Image.png","Pink Sweat Game Imgae.png","Pink Sweat$ - Honesty Selected.mp3","Pink Sweat$  - Honesty.mp3"));
+		musicTrackList.add(new MusicTrack("Tango Title Image.png", "Tango Start Image.png","Tango Game Image.png","ABIR - Tango Selected.mp3","ABIR - Tango.mp3"));
+		exitButton.setBounds(1245, 0,30, 30); 
 		exitButton.setContentAreaFilled(false);
 		exitButton.setFocusPainted(false);
 		exitButton.addMouseListener(new MouseAdapter() {
@@ -110,8 +119,9 @@ public class MusicGame extends JFrame {
 				Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
 				buttonPressedMusic.start();
 				introMusic.close();
-				Music selectedMusic = new Music("JP Cooper - In The Silence Selected.mp3",true);//곡을 바꾸지 않는 이상 무한재생
-				selectedMusic.start(); 
+			
+				selectTrack(0);//맨처음에는 첫번째곡이 선택되기땜에 이거 실행식킴
+				
 			//// 아래는 게임시작이벤트 넣을곳 /////
 				startButton.setVisible(false);
 				quitButton.setVisible(false);
@@ -122,7 +132,8 @@ public class MusicGame extends JFrame {
 			}
 		});
 		add(startButton);
-
+		
+		
 		quitButton.setBounds(40, 330, 400, 100);
 		quitButton.setContentAreaFilled(false);
 		quitButton.setFocusPainted(false);
@@ -167,7 +178,7 @@ public class MusicGame extends JFrame {
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				leftButton.setIcon(quitButtonBasicImage);
+				leftButton.setIcon(leftButtonBasicImage);
 				leftButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 			@Override
@@ -176,6 +187,7 @@ public class MusicGame extends JFrame {
 				buttonPressedMusic.start();
 				
 				//왼쪽 버튼 이벤트  
+				selectLeft();
 			}
 		});
 		add(leftButton);
@@ -194,7 +206,7 @@ public class MusicGame extends JFrame {
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				rightButton.setIcon(quitButtonBasicImage);
+				rightButton.setIcon(rightButtonBasicImage);
 				rightButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 			@Override
@@ -203,6 +215,7 @@ public class MusicGame extends JFrame {
 				buttonPressedMusic.start();
 				
 				//오른쪽 버튼 이벤트  
+				selectRight();
 			}
 		});
 		add(rightButton);
@@ -248,6 +261,36 @@ public class MusicGame extends JFrame {
 		}
 		paintComponents(g);// 메뉴바같은 건 항상 존재하기 때문에 한버튼이나 고정된 메뉴바에 사용함., add등 추가된 애들을 보여주는 부분이고 
 		this.repaint();// 전체화면 이미지를 매순간마다 그려줌.
+	}
+	
+	public void selectTrack(int nowSelected) {
+		if (selectedMusic!=null) {
+			selectedMusic.close();
+			titleImage =  new ImageIcon(Main.class.getResource("../images/" + musicTrackList.get(nowSelected).getTitleImage())).getImage();
+			selectedImage =  new ImageIcon(Main.class.getResource("../images/"+ musicTrackList.get(nowSelected).getStartImage())).getImage();
+			selectedMusic = new Music(musicTrackList.get(nowSelected).getStartMusic(),true);
+			selectedMusic.start();
+		}
+	}
+	
+	public void selectLeft() {
+		if(nowSelected == 0) {
+			nowSelected = musicTrackList.size() -1;
+		}else {
+			nowSelected--;
+		}
+		selectTrack(nowSelected);
+	}
+	
+	
+	
+	public void selectRight() {
+		if(nowSelected == musicTrackList.size() -1) {//마지막곡이라면 첫번째곡 
+			nowSelected = 0;
+		}else {
+			nowSelected++;//아니라ㄴ면 올느ㅉ거ㅗㅇ로
+		}
+		selectTrack(nowSelected);
 	}
 
 }

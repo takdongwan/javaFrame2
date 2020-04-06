@@ -239,7 +239,7 @@ public class DynamicBeat extends JFrame {
 		g.drawImage(background, 0, 0, null);// 0,0 좌표 , add 된게아니라 화면ㅇ ㅔ출력해주는 것을 g 를 사용  
 		if(isMainScreen) {
 			g.drawImage(selectedImage,340, 100, null); 
-			g.drawImage(titleImage,340,70, null);
+			g.drawImage(titleImage,100,70, null);
 		}
 		paintComponents(g);// 메뉴바같은 건 항상 존재하기 때문에 한버튼이나 고정된 메뉴바에 사용함., add등 추가된 애들을 보여주는 부분이고 
 		this.repaint();// 전체화면 이미지를 매순간마다 그려줌.
